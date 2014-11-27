@@ -1,6 +1,5 @@
 require 'active_model'
 require "validate_attributes/version"
-require 'byebug'
 
 module ValidateAttributes
   extend ActiveSupport::Concern
@@ -11,9 +10,8 @@ module ValidateAttributes
     _attributes = extract_attributes(options)
 
     # TODO: Use flat_map only with ruby 1.9
-    # TODO: Validate_each doesn't work with ruby 1.8
-    if RUBY_VERSION =~ /^1.8/
-      return validate_attributes_18(_attributes)
+    if ActiveModel::VERSION::MAJOR == 3
+      return validate_attributes_3(_attributes)
     end
 
     result = _attributes.map do |attr|
@@ -26,19 +24,19 @@ module ValidateAttributes
   end
 
   private
-  def validate_attributes_18(attrs)
-    result = attrs.map do |attr|
-      self.class.validators_on(attr).map do |validator|
+  def validate_attributes_3(attrs)
+    attrs.map!(&:to_sym)
+    attrs.each do |attr|
+      self.class.validators_on(attr).each do |validator|
         fields = validator.validate(self)
-        fields.each do|f|
-          unless attrs.include?(f)
-            self.errors[f].clear
-          end
+        rejected = fields.reject {|f| attrs.include?(f.to_sym) }
+        rejected.each do |f|
+          errors[f].clear
         end
       end
     end
 
-    self.errors.present?
+    self.errors.blank?
   end
 
   def extract_attributes(options)

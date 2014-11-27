@@ -72,15 +72,15 @@ RSpec.describe ValidateAttributes do
         expect(@result).to be_falsey
       end
 
-      it "doesn't validate name" do
+      it "does validate name" do
         expect(user.errors[:name]).to_not be_blank
       end
 
-      it "doesn't validate address" do
+      it "does validate address" do
         expect(user.errors[:address]).to_not be_blank
       end
 
-      it "validate email" do
+      it "doesn't validate email" do
         expect(user.errors[:email]).to be_blank
       end
     end
