@@ -1,6 +1,8 @@
 # ValidateAttributes
 
-TODO: Write a gem description
+Allows for validation of only some attributes
+
+Based on [expressica/validate_attributes](http://expressica.com/plugins/validate_attributes)
 
 ## Installation
 
