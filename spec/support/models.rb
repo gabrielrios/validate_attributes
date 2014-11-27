@@ -23,3 +23,25 @@ class User
     [ "name", "email", "address" ]
   end
 end
+
+class Post
+  include ActiveModel::Validations
+  attr_accessor :id, :title, :content
+
+  validates_presence_of :title, :content
+
+  def self.build(attributes = {})
+    new attributes
+  end
+
+  def initialize(options = {})
+    @new_record = false
+    options.each do |key, value|
+      send("#{key}=", value)
+    end if options
+  end
+
+  def attribute_names
+    [ "id", "title", "content" ]
+  end
+end

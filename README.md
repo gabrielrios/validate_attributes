@@ -4,6 +4,8 @@ Allows for validation of only some attributes
 
 Based on [expressica/validate_attributes](http://expressica.com/plugins/validate_attributes)
 
+Currently only tested with ActiveModel 3.0.20
+
 ## Installation
 
 Add this line to your application's Gemfile:
