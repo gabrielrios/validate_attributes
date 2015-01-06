@@ -101,5 +101,18 @@ RSpec.describe ValidateAttributes do
     end
   end
 
+  context "After a previous validation" do
+    it "still validates only the attributes" do
+      post = Post.new
+      expect(post).to be_invalid
+      expect(post.errors[:title]).to_not be_blank
+      expect(post.errors[:content]).to_not be_blank
+
+      post.validate_attributes(:only => :title)
+      expect(post.errors[:title]).to_not be_blank
+      expect(post.errors[:content]).to be_blank
+    end
+  end
+
 
 end

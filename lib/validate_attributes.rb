@@ -6,6 +6,7 @@ module ValidateAttributes
 
   def validate_attributes(options = {})
     return valid? if options.empty?
+    errors.clear # Clean old validations as we're interested only on those
 
     _attributes = extract_attributes(options)
 
@@ -30,9 +31,7 @@ module ValidateAttributes
       self.class.validators_on(attr).each do |validator|
         fields = validator.validate(self)
         rejected = fields.reject {|f| attrs.include?(f.to_sym) }
-        rejected.each do |f|
-          errors[f].clear
-        end
+        rejected.each { |f| errors[f].clear }
       end
     end
 
@@ -61,4 +60,6 @@ module ValidateAttributes
   end
 end
 
-ActiveModel::Validations.send(:include, ValidateAttributes)
+module ActiveModel::Validations
+  include ValidateAttributes
+end
