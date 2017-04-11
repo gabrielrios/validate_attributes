@@ -1,4 +1,5 @@
 require 'active_model'
+require 'active_record'
 require "validate_attributes/version"
 
 module ValidateAttributes
@@ -61,5 +62,9 @@ module ValidateAttributes
 end
 
 module ActiveModel::Validations
+  include ValidateAttributes
+end
+
+class ActiveRecord::Base
   include ValidateAttributes
 end
